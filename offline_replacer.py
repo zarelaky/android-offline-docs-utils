@@ -1,8 +1,8 @@
 #
-root=r'href=(["\'])http://developer.android.com'
-root_re=r'href="http://developer.android.com/([^"\']*)"'
-root_rep_fmt=r'href=\1{0}'
+
+root_regex={r'href=(["\'])http://developer.android.com':r'href=\1{0}', r'href=(["\'])/':r'href=\1{0}/'}
 regex={'http://www.google.com/jsapi':'http://ajax.useso.com/jsapi', 'http://fonts.googleapis.com':'http://fonts.useso.com'}
+
 
 import os
 import os.path
@@ -58,26 +58,28 @@ class Walker:
         if rpath is None:
             rpath = "."
         return rpath
-                       
+    def replace_root(self, l, relativeTopPath):
+        nl=l
+        for i in root_regex:
+            rp = root_regex[i].format(relativeTopPath)
+            nl = re.sub(i, rp, nl)
+        return nl
+
     def replace(self, path):
         #print("html:"+path)
         tmp=path+'.tmp'
-        
         
         f=open(path, 'rb')
         n=open(tmp,'wb+')
         lineCounter=0;
         relativeTopPath=self.calcRelativePathToTop(path)
         self.logout("file:{0}".format(path));
-        r=re.compile(root);
         if f is not None:
             for i in f:
                 lineCounter = lineCounter+1
                 l = i.decode('utf-8')
-                
-                rp = root_rep_fmt.format(relativeTopPath)
-                nl = re.sub(root, rp, l)
-                
+                nl=self.replace_root(l, relativeTopPath)
+                                
                 # relative to root folder
                 if nl != l:
                     self.logout("\t{0}:{1} <- {2}".format(lineCounter, nl, l).expandtabs(self.tabsize))

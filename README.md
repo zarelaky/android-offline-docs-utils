@@ -1,6 +1,6 @@
 # android-offline-docs-utils
 replace element in android-sdk-docs , made it pointer to cdn which can be access in china.
-so it can be browser smoothly.
+so it can be browsed smoothly.
 
 ## env
 python 3.5
