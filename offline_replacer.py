@@ -1,7 +1,9 @@
 #
 
 root_regex={r'href=(["\'])http://developer.android.com':r'href=\1{0}', r'href=(["\'])/':r'href=\1{0}/'}
-regex={'http://www.google.com/jsapi':'http://ajax.useso.com/jsapi', 'http://fonts.googleapis.com':'http://fonts.useso.com'}
+regex={'http[s]*://www.google.com/jsapi':'http://ajax.useso.com/jsapi',
+        'http://fonts.googleapis.com':'http://fonts.useso.com',
+        r'//www.google.com/jsapi':'http://ajax.useso.com/jsapi'}
 
 
 import os
